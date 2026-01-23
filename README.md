@@ -9,4 +9,4 @@ Current Idea is to create a game library used to rate video games and in doing s
 Group Members
 1. Jackson Blellock 169027803
 2. Muhammad Imran 210725970
-3. 
+3. Kayleigh Zelichowski 169034544
