@@ -24,27 +24,27 @@ replaced with a recorded demo video upon project completion.
 ### Sign In Page
 This screen allows users to sign in and access their personal game library.
 
-<img src="images/SignInPage.png" alt="Sign In Page wireframe" width="350"/>
+<img src="Images/SignInPage.png" alt="Sign In Page wireframe" width="350"/>
 
 ### Library Page
 Displays all games owned by the user with navigation to the store and sign-out.
 
-<img src="images/LibraryWireframe.png" alt="Library Page wireframe" width="450"/>
+<img src="Images/LibraryWireframe.png" alt="Library Page wireframe" width="450"/>
 
 ### Library Game Page
 Allows users to view game details and submit a review.
 
-<img src="images/LibraryGameWireframe.png" alt="Library Game Page wireframe" width="450"/>
+<img src="Images/LibraryGameWireframe.png" alt="Library Game Page wireframe" width="450"/>
 
 ### Store Page
 Displays all available games that can be purchased using earned tokens.
 
-<img src="images/StoreWireframe.png" alt="Store Page wireframe" width="450"/>
+<img src="Images/StoreWireframe.png" alt="Store Page wireframe" width="450"/>
 
 ### Store Game Page
 Displays game details and allows users to purchase the game.
 
-<img src="images/StoreGameWireframe.png" alt="Store Game Page wireframe" width="450"/>
+<img src="Images/StoreGameWireframe.png" alt="Store Game Page wireframe" width="450"/>
 
 
 User instructions - To be filled out upon development
