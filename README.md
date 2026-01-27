@@ -16,6 +16,35 @@ This project is being designed to create a space where users can access games al
 
 
 *Diagram/Video of this website to be inserted upon completion. Wireframe to be implemented in place for the time being
+## Wireframes (Milestone 01)
+
+Wireframes are provided to illustrate the primary user workflow. These will be
+replaced with a recorded demo video upon project completion.
+
+### Sign In Page
+This screen allows users to sign in and access their personal game library.
+
+<img src="images/SignInPage.png" alt="Sign In Page wireframe" width="350"/>
+
+### Library Page
+Displays all games owned by the user with navigation to the store and sign-out.
+
+<img src="images/LibraryWireframe.png" alt="Library Page wireframe" width="450"/>
+
+### Library Game Page
+Allows users to view game details and submit a review.
+
+<img src="images/LibraryGameWireframe.png" alt="Library Game Page wireframe" width="450"/>
+
+### Store Page
+Displays all available games that can be purchased using earned tokens.
+
+<img src="images/StoreWireframe.png" alt="Store Page wireframe" width="450"/>
+
+### Store Game Page
+Displays game details and allows users to purchase the game.
+
+<img src="images/StoreGameWireframe.png" alt="Store Game Page wireframe" width="450"/>
 
 
 User instructions - To be filled out upon development
