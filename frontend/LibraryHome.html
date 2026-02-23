@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
    <meta charset="utf-8">
-   <title>Smoke</title>
+   <title>Smoke - Library</title>
    <link rel="stylesheet" href="libraryhome.css" />
 </head>
 <body>
@@ -11,8 +11,51 @@
    <h1>Smoke</h1>
 </header>
 
+<nav>
+   <button type="button" class="nav-tab nav-active">Library</button>
+   <button type="button" class="nav-tab">Store</button>
+</nav>
+
 <main>
-   <h2>Library Home</h2>
+   <aside>
+      <h2>Your Games</h2>
+      <ul class="game-list">
+         <li><button type="button" class="game-button game-active">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+         <li><button type="button" class="game-button">Game Name</button></li>
+      </ul>
+   </aside>
+
+   <section class="game-details">
+      <h3>Example Game</h3>
+      <div class="game-image">
+         <img src="../images/game1.png" alt="Example Game">
+      </div>
+      
+      <div class="rating">
+         <span>Your Rating: </span>
+         <span class="stars">★★★★★</span>
+      </div>
+      
+      <div class="button-container">
+         <button type="button" class="action-button play-button">Play</button>
+         <button type="button" class="action-button review-button">Leave a Review</button>
+      </div>
+      
+      <p class="description">Description of game...</p>
+   </section>
 </main>
 
 </body>
