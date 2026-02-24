@@ -1,0 +1,132 @@
+body {
+   font-family: Arial, sans-serif;
+   font-size: 100%;
+   background-color: #F5F5F5;
+   margin: 0;
+   padding: 0;
+}
+
+header {
+   background-color: white;
+   padding: 1em 2em;
+   border-bottom: 1px solid #E0E0E0;
+}
+
+header h1 {
+   font-size: 1.5rem;
+   font-weight: bold;
+   color: #333;
+   margin: 0;
+}
+
+main {
+   display: flex;
+   padding: 2em;
+   max-width: 1400px;
+   margin: 0 auto;
+   gap: 2em;
+}
+
+.game-image-section {
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+   gap: 1em;
+}
+
+.main-image {
+   width: 100%;
+   background-color: #E0E0E0;
+   border: 1px solid #BDBDBD;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   min-height: 400px;
+}
+
+.main-image img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+}
+
+.thumbnail-gallery {
+   display: flex;
+   gap: 0.5em;
+   flex-wrap: wrap;
+}
+
+.thumbnail-button {
+   width: 80px;
+   height: 80px;
+   background-color: #E0E0E0;
+   border: 2px solid #BDBDBD;
+   cursor: pointer;
+   padding: 0;
+   overflow: hidden;
+}
+
+.thumbnail-button:hover {
+   border-color: #333;
+}
+
+.thumbnail-button img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+}
+
+.game-info-section {
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+   gap: 1.5em;
+}
+
+.description-box,
+.developer-box,
+.rating-box,
+.categories-box {
+   background-color: white;
+   padding: 1.5em;
+   border: 1px solid #BDBDBD;
+   border-radius: 3px;
+}
+
+.description-box h2,
+.developer-box h3,
+.rating-box h3,
+.categories-box h3 {
+   margin: 0 0 1em 0;
+   font-size: 1.2rem;
+   color: #333;
+}
+
+.description-box p,
+.developer-box p,
+.rating-box p,
+.categories-box p {
+   margin: 0.5em 0;
+   color: #666;
+   line-height: 1.6;
+}
+
+.rating-box p {
+   font-size: 1.5rem;
+   color: #333;
+}
+
+.back-button {
+   background-color: #333;
+   color: white;
+   padding: 1em 2em;
+   border: none;
+   cursor: pointer;
+   font-size: 1rem;
+   border-radius: 3px;
+   margin-top: auto;
+}
+
+.back-button:hover {
+   background-color: #4A4A4A;
+}
