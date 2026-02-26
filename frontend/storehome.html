@@ -12,7 +12,9 @@
 </header>
 
 <nav>
-   <button type="button" class="nav-tab">Library</button>
+   <form method="get" action="LibraryHome.html" style="display:inline;">
+      <button type="submit" class="nav-tab">:Library</button>
+   </form>
    <button type="button" class="nav-tab nav-active">Store</button>
 </nav>
 
@@ -26,6 +28,7 @@
       <h2>Featured Games</h2>
       
       <div class="game-grid">
+
          <div class="game-card">
             <div class="game-image">
                <img src="../images/game1.png" alt="Game 1">
@@ -34,7 +37,10 @@
             <div class="game-rating">★★★★★</div>
             <p class="game-price">$0.00</p>
             <p class="game-description">Description</p>
-            <button type="button" class="view-button">View Game</button>
+
+            <form method="get" action="storegamepage.html">
+               <button type="submit" class="view-button">View Game</button>
+            </form>
          </div>
 
          <div class="game-card">
@@ -45,8 +51,12 @@
             <div class="game-rating">★★★★★</div>
             <p class="game-price">$0.00</p>
             <p class="game-description">Description</p>
-            <button type="button" class="view-button">View Game</button>
+
+            <form method="get" action="storegamepage.html">
+               <button type="submit" class="view-button">View Game</button>
+            </form>
          </div>
+
          <div class="game-card">
             <div class="game-image">
                <img src="../images/game1.png" alt="Game 3">
@@ -55,8 +65,12 @@
             <div class="game-rating">★★★★★</div>
             <p class="game-price">$0.00</p>
             <p class="game-description">Description</p>
-            <button type="button" class="view-button">View Game</button>
+
+            <form method="get" action="storegamepage.html">
+               <button type="submit" class="view-button">View Game</button>
+            </form>
          </div>
+
       </div>
    </section>
 
@@ -71,14 +85,17 @@
          <button type="button" class="genre-button">
             <span class="genre-name">Adventure</span>
          </button>
+
          <button type="button" class="genre-button">
             <span class="genre-name">RPG</span>
          </button>
+
          <button type="button" class="genre-button">
             <span class="genre-name">Strategy</span>
          </button>
       </div>
    </section>
+
 </main>
 
 </body>
