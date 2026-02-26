@@ -53,4 +53,23 @@ User instructions - To be filled out upon development
 Known Issues - To be filled out upon development
 
 
+Summary of Team Member Contributions
+1. Jackson Blellock:
+   * Implemented core screens that match the wireframes of Milestone 1
+   * Developed primary workflow functional in the UI
+   * Updated the Blog/Wiki
+2. Muhammad Imran:
+   * Initialized the backend with npm init and installed Express + CORS
+   * Created server.js as the main entry point (runs on port 3000)
+   * Created routes/folder with route files for auth, games, library, and reviews
+   * Created controllers/ folder with controller files containing stub logic for each route
+   * Tested the server locally at http://localhost:3000/
+   * Created a README.md documenting all API endpoints and project structure
+3. Kayleigh Zelichowski:
+   * Created relational database diagram with primary, foreign, and other important keys, and specific datatypes for attributes
+   * Edited/added tables in diagram to avoid obvious redundancies and anomalies
+   * Documented constraints where necessary
+   * Wrote valid SQL CREATE TABLE statements, tested via Programiz online SQL editor
+   * Added the team plan to this readme
 
+Each team member is responsible for pushing/committing their own progress to the GitHub page.
