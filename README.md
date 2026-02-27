@@ -47,10 +47,34 @@ Displays game details and allows users to purchase the game.
 <img src="Images/StoreGameWireframe.png" alt="Store Game Page wireframe" width="450"/>
 
 
-User instructions - To be filled out upon development
+User instructions 
+
+## How to Run Front end Locally
+### Requirments:
+- Browser of choice
+- Git installed on your device 
+
+### Steps
+1. Clone the repository 
+- Use the following link to be able to clone the repo: https://github.com/ItzJagger/cp476-group23-project.git
+
+2. Navigate to the Front end Folder of the Repo
+- Folder name: frontend
+
+3. Open the Sign in Page
+- Open the 'signin.html' file in your web browser
+   - Either Double click the file in your file explorer
+   - Right click the file, Go to open with and select your browser
+
+4. NAvigate the Web page
+- At the sign in page, just click sign in as it will take you to the next page regardless of what is in the two boxes
+- View the store and Library as freely as you want but reminder these are very early stages and many of these features are only there for visual purposes. 
 
 
 Known Issues - To be filled out upon development
+Frontend
+- Sign in feature is not tied into the application yet, No user or password is needed, sign is allowed without either for the time being
+- Buttons such as the searc, purchase, genre, leave a review all have no functional purpose, they are just there to show where they will be in the final site
 
 
 Summary of Team Member Contributions
