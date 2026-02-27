@@ -12,18 +12,17 @@
 </header>
 
 <nav>
-   <form method="get" action="LibraryHome.html" style="display:inline;">
-      <button type="submit" class="nav-tab">:Library</button>
-   </form>
+   <!--Same idea as before, store is now darker to indicate you are on store, library takes you to library home-->
+   <a href="LibraryHome.html" class="nav-tab">Library</a>
    <button type="button" class="nav-tab nav-active">Store</button>
 </nav>
 
 <main>
    <div class="search-container">
       <label for="search">Search</label>
-      <input type="text" id="search" name="search" placeholder="Search games...">
+      <input type="text" id="search" name="search" placeholder="Search games...(Doesnt work as no games are made)">
    </div>
-
+   <!--Section is all filler for front page, will be edited later-->
    <section class="featured-section">
       <h2>Featured Games</h2>
       
@@ -37,10 +36,8 @@
             <div class="game-rating">★★★★★</div>
             <p class="game-price">$0.00</p>
             <p class="game-description">Description</p>
-
-            <form method="get" action="storegamepage.html">
-               <button type="submit" class="view-button">View Game</button>
-            </form>
+            <!--Button goes to storegamepage to show how it will look when you focus in on one game, same applies for all the other buttons-->
+            <a href="storegamepage.html" class="view-button">View Game</a>
          </div>
 
          <div class="game-card">
@@ -52,9 +49,7 @@
             <p class="game-price">$0.00</p>
             <p class="game-description">Description</p>
 
-            <form method="get" action="storegamepage.html">
-               <button type="submit" class="view-button">View Game</button>
-            </form>
+            <a href="storegamepage.html" class="view-button">View Game</a>
          </div>
 
          <div class="game-card">
@@ -66,14 +61,12 @@
             <p class="game-price">$0.00</p>
             <p class="game-description">Description</p>
 
-            <form method="get" action="storegamepage.html">
-               <button type="submit" class="view-button">View Game</button>
-            </form>
+            <a href="storegamepage.html" class="view-button">View Game</a>
          </div>
 
       </div>
    </section>
-
+   <!--Genre section, again will be edited when we start to add actual games instead of having placeholders-->
    <section class="genre-section">
       <h2>Search By Genre</h2>
       
