@@ -197,3 +197,9 @@ main {
    font-size: 0.9rem;
    color: #CCC;
 }
+
+header h1 img {
+   height: 40px;
+   width: auto;
+   display: block;
+}

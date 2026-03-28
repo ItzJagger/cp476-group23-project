@@ -81,3 +81,9 @@ input[type="submit"] {
 input[type="submit"]:hover {
    background-color: #757575;
 }
+
+header h1 img {
+   height: 40px;
+   width: auto;
+   display: block;
+}

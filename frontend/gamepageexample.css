@@ -130,3 +130,9 @@ main {
 .back-button:hover {
    background-color: #4A4A4A;
 }
+
+header h1 img {
+   height: 40px;
+   width: auto;
+   display: block;
+}

@@ -195,3 +195,9 @@ aside h2 {
    margin: 0;
    text-align: center;
 }
+
+header h1 img {
+   height: 40px;
+   width: auto;
+   display: block;
+}
