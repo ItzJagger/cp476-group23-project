@@ -16,41 +16,39 @@
 <main>
    <section class="game-image-section">
       <div class="main-image">
-         <img src="game1.png" alt="Game Image">
+         <img id="mainImage" src="../Games/StrikerEliteIMGs/StrikerEliteMain.png" alt="Striker Elite Main Image">
       </div>
-      <!--all images are placeholders for now-->
+
       <div class="thumbnail-gallery">
          <button type="button" class="thumbnail-button">
-            <img src="game1.png" alt="Thumbnail 1">
+            <img src="../Games/StrikerEliteIMGs/StrikerEliteLower1.png" alt="Thumbnail 1">
          </button>
          <button type="button" class="thumbnail-button">
-            <img src="game1.png" alt="Thumbnail 2">
+            <img src="../Games/StrikerEliteIMGs/StrikerEliteLower2.png" alt="Thumbnail 2">
          </button>
          <button type="button" class="thumbnail-button">
-            <img src="game1.png" alt="Thumbnail 3">
+            <img src="../Games/StrikerEliteIMGs/StrikerEliteLower3.png" alt="Thumbnail 3">
          </button>
          <button type="button" class="thumbnail-button">
-            <img src="game1.png" alt="Thumbnail 4">
+            <img src="../Games/StrikerEliteIMGs/StrikerEliteLower4.png" alt="Thumbnail 4">
          </button>
          <button type="button" class="thumbnail-button">
-            <img src="game1.png" alt="Thumbnail 5">
-         </button>
-         <button type="button" class="thumbnail-button">
-            <img src="game1.png" alt="Thumbnail 6">
+            <img src="../Games/StrikerEliteIMGs/StrikerEliteLower5.png" alt="Thumbnail 5">
          </button>
       </div>
    </section>
-   <!--Full game description that can be tailored per game-->
+
    <section class="game-info-section">
       <div class="description-box">
-         <h2>Description</h2>
-         <p>Game description text goes here...</p>
-         <p>Additional description text...</p>
-         <p>More details about the game...</p>
+         <h2>Striker Elite: World Football</h2>
+         <p>Striker Elite: World Football is a fast-paced soccer simulation where players can build their dream team and compete on the global stage.</p>
+         <p>Take control of every pass, shot, and tackle with responsive gameplay, or manage your squad through an in-depth career mode.</p>
+         <p>Rise through leagues, win trophies, and become a legendary club in world football.</p>
       </div>
+
       <div class="developer-box">
          <h3>Developer/team</h3>
-         <p>Developer Name</p>
+         <p>Kickoff Studios</p>
       </div>
 
       <div class="rating-box">
@@ -60,14 +58,29 @@
 
       <div class="categories-box">
          <h3>Categories/Genres</h3>
-         <p>Genre 1</p>
-         <p>Genre 2</p>
-         <p>Genre 3</p>
+         <p>Sports</p>
+         <p>Simulation</p>
+         <p>Multiplayer</p>
       </div>
-      <!--Button to go from gamepage back to library with all the other games-->
+
       <a href="../LibraryHome.html" class="back-button">Back to Library</a>
    </section>
 </main>
 
 </body>
 </html>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+   const mainImage = document.getElementById("mainImage");
+   const thumbnails = document.querySelectorAll(".thumbnail-button img");
+
+   thumbnails.forEach(function(thumbnail) {
+      thumbnail.addEventListener("click", function() {
+         mainImage.src = this.src;
+         mainImage.alt = this.alt;
+      });
+   });
+});
+</script>
