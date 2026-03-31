@@ -8,7 +8,6 @@
 <body>
 
 <header>
-   <!--Same as sign in, top header of company name (Still undecided on name so could change)-->
    <h1>
       <img src="../images/Smoke_bold.png" alt="Company Logo">
    </h1>
@@ -38,35 +37,28 @@
    const token = localStorage.getItem('token');
    const username = localStorage.getItem('username');
 
-   // Redirect to login if not logged in
    if (!token) {
       window.location.href = 'signin.html';
    }
 
-   // Show credits
    document.getElementById('creditsDisplay').textContent = 'Credits: ' + (localStorage.getItem('credits') || '0');
 
-   // Logout
    document.getElementById('logoutBtn').addEventListener('click', function() {
       localStorage.clear();
       window.location.href = 'signin.html';
    });
 
-   // Game page mapping
    const gamePageMap = {
       1: 'Games/Game1.html',
       2: 'Games/Game2.html',
       3: 'Games/Game3.html',
       4: 'Games/Game4.html',
-      5: 'Games/Game5.html',
-      6: 'Games/Game6.html',
-      7: 'Games/Game7.html'
+      5: 'Games/Game5.html'
    };
 
-   // Fetch user's library
    async function loadLibrary() {
       try {
-         const response = await fetch('http://localhost:3000/api/library', {
+         const response = await fetch('http://127.0.0.1:3000/api/library', {
             headers: { 'Authorization': 'Bearer ' + token }
          });
 

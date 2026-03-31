@@ -9,14 +9,14 @@
 
 <header>
    <h1>
-      <img src="../images/Smoke_bold.png" alt="Company Logo">
+      <img src="Games/Smoke_bold.png" alt="Company Logo">
    </h1>
 </header>
 
 <main>
    <section class="game-image-section">
       <div class="main-image">
-         <img id="mainImage" src="../images/game1.png" alt="Game Image">
+         <img id="mainImage" src="Games/Smoke_bold.png" alt="Game Image">
       </div>
       <div class="thumbnail-gallery" id="thumbnailGallery">
       </div>
@@ -60,7 +60,6 @@
       window.location.href = 'signin.html';
    }
 
-   // Get game ID from URL query string
    const params = new URLSearchParams(window.location.search);
    const gameId = params.get('id');
 
@@ -68,10 +67,17 @@
       window.location.href = 'storehome.html';
    }
 
+   const gameThumbnails = {
+      1: 'Games/NeonCityIMGs/NeonCityMain.png',
+      2: 'Games/MysticValeIMGs/MysticValeMain.png',
+      3: 'Games/Smoke_bold.png',
+      4: 'Games/Smoke_bold.png',
+      5: 'Games/Smoke_bold.png'
+   };
+
    async function loadGame() {
       try {
-         // Load game details
-         const gameRes = await fetch('http://localhost:3000/api/games/' + gameId);
+         const gameRes = await fetch('http://127.0.0.1:3000/api/games/' + gameId);
          const gameData = await gameRes.json();
          const game = gameData.game;
 
@@ -82,9 +88,9 @@
          document.getElementById('gamePrice').textContent = 'Price: ' + game.price + ' Credits';
          document.getElementById('gamePurchases').textContent = 'Global Purchases: ' + game.purchase_count;
          document.getElementById('gameGenres').textContent = game.genres || 'N/A';
+         document.getElementById('mainImage').src = gameThumbnails[parseInt(gameId)] || 'Games/Smoke_bold.png';
 
-         // Load reviews for average rating
-         const reviewRes = await fetch('http://localhost:3000/api/reviews/game/' + gameId);
+         const reviewRes = await fetch('http://127.0.0.1:3000/api/reviews/game/' + gameId);
          const reviewData = await reviewRes.json();
          if (reviewData.averageRating) {
             document.getElementById('gameRating').textContent = '⭐ ' + reviewData.averageRating + ' / 5 (' + reviewData.count + ' reviews)';
@@ -92,8 +98,7 @@
             document.getElementById('gameRating').textContent = 'No reviews yet';
          }
 
-         // Check if user owns the game
-         const ownRes = await fetch('http://localhost:3000/api/library/check/' + gameId, {
+         const ownRes = await fetch('http://127.0.0.1:3000/api/library/check/' + gameId, {
             headers: { 'Authorization': 'Bearer ' + token }
          });
          const ownData = await ownRes.json();
@@ -120,7 +125,7 @@
       const purchaseBtn = document.getElementById('purchaseBtn');
 
       try {
-         const response = await fetch('http://localhost:3000/api/library/' + gameId, {
+         const response = await fetch('http://127.0.0.1:3000/api/library/' + gameId, {
             method: 'POST',
             headers: { 'Authorization': 'Bearer ' + token }
          });
@@ -133,7 +138,6 @@
             return;
          }
 
-         // Update credits in localStorage
          localStorage.setItem('credits', data.remainingCredits);
 
          statusMsg.textContent = 'Purchase successful! Remaining credits: ' + data.remainingCredits;

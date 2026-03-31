@@ -2,23 +2,20 @@
 <html lang="en">
 <head>
    <meta charset="utf-8">
-   <title>Smoke - Game Details</title>
+   <title>Smoke - Neon City: Night Drift</title>
    <link rel="stylesheet" href="Game.css" />
 </head>
 <body>
-
 <header>
    <h1>
       <img src="Smoke_bold.png" alt="Company Logo">
    </h1>
 </header>
-
 <main>
    <section class="game-image-section">
       <div class="main-image">
          <img id="mainImage" src="../Games/NeonCityIMGs/NeonCityMain.png" alt="Game Image">
       </div>
-      <!--all images are placeholders for now-->
       <div class="thumbnail-gallery">
          <button type="button" class="thumbnail-button">
             <img src="../Games/NeonCityIMGs/NeonCityLower1.png" alt="Thumbnail 1">
@@ -37,37 +34,31 @@
          </button>
       </div>
    </section>
-   <!--Full game description that can be tailored per game-->
+
    <section class="game-info-section">
       <div class="description-box">
          <h2>Neon City: Night Drift</h2>
-         <p> Fast-paced arcade racing game set in a glowing cyberpunk city. Master tight corners, chain drifts, and earn style points to climb the underground racing scene. Customize your cars, challenge rivals, and dominate the streets after dark.</p>
+         <p>Fast-paced arcade racing game set in a glowing cyberpunk city. Master tight corners, chain drifts, and earn style points to climb the underground racing scene. Customize your cars, challenge rivals, and dominate the streets after dark.</p>
       </div>
       <div class="developer-box">
-         <h3>Developer/team</h3>
+         <h3>Developer</h3>
          <p>Midnight Mania</p>
       </div>
-
       <div class="rating-box">
          <h3>Rating</h3>
-         <p>★★★★★</p>
-         <p>Price: 80 Credits (Already Owned) </p>
-         <p>Global Purchases: 1</p>
+         <p id="avgRating">Loading...</p>
+         <p>Price: 80 Credits</p>
+         <p id="purchaseCount">Loading...</p>
       </div>
-
       <div class="categories-box">
          <h3>Categories/Genres</h3>
-         <p>Racing</p>
-         <p>Arcade</p>
-         <p>Cyberpunk</p>
+         <p>Racing, Arcade, Cyberpunk</p>
       </div>
-      <!--Button to go from gamepage back to library with all the other games-->
       <a href="../LibraryHome.html" class="back-button">Back to Library</a>
    </section>
-      <section class="reviews-section" style="padding: 20px;">
-      <h2>Reviews</h2>
 
-      <!-- Leave a review -->
+   <section class="reviews-section" style="padding: 20px;">
+      <h2>Reviews</h2>
       <div id="reviewForm" style="margin-bottom: 20px;">
          <h3>Leave a Review</h3>
          <label for="rating">Rating (1-5):</label>
@@ -85,34 +76,27 @@
          <button type="button" id="submitReview">Submit Review</button>
          <p id="reviewMsg" style="display:none;"></p>
       </div>
-
-      <!-- Existing reviews -->
       <div id="reviewsList">
          <p>Loading reviews...</p>
       </div>
    </section>
 </main>
 
-
 <script>
    const GAME_ID = 1;
    const token = localStorage.getItem('token');
 
-   if (!token) {
-      window.location.href = '../signin.html';
-   }
+   if (!token) window.location.href = '../signin.html';
 
-   // Thumbnail click
    document.querySelectorAll('.thumbnail-button img').forEach(function(img) {
       img.addEventListener('click', function() {
          document.getElementById('mainImage').src = this.src;
       });
    });
 
-   // Load reviews and game stats
    async function loadReviews() {
       try {
-         const res = await fetch('http://localhost:3000/api/reviews/game/' + GAME_ID);
+         const res = await fetch('http://127.0.0.1:3000/api/reviews/game/' + GAME_ID);
          const data = await res.json();
 
          document.getElementById('avgRating').textContent = data.averageRating
@@ -137,23 +121,21 @@
       }
    }
 
-   // Load purchase count
    async function loadGameStats() {
       try {
-         const res = await fetch('http://localhost:3000/api/games/' + GAME_ID);
+         const res = await fetch('http://127.0.0.1:3000/api/games/' + GAME_ID);
          const data = await res.json();
          document.getElementById('purchaseCount').textContent = 'Global Purchases: ' + data.game.purchase_count;
       } catch (err) {}
    }
 
-   // Submit review
    document.getElementById('submitReview').addEventListener('click', async function() {
       const rating = parseInt(document.getElementById('rating').value);
       const contents = document.getElementById('reviewText').value.trim();
       const msg = document.getElementById('reviewMsg');
 
       try {
-         const res = await fetch('http://localhost:3000/api/reviews/game/' + GAME_ID, {
+         const res = await fetch('http://127.0.0.1:3000/api/reviews/game/' + GAME_ID, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -187,7 +169,5 @@
    loadReviews();
    loadGameStats();
 </script>
-
 </body>
 </html>
-

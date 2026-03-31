@@ -96,7 +96,7 @@
 
    async function loadReviews() {
       try {
-         const res = await fetch('http://localhost:3000/api/reviews/game/' + GAME_ID);
+         const res = await fetch('http://127.0.0.1:3000/api/reviews/game/' + GAME_ID);
          const data = await res.json();
 
          document.getElementById('avgRating').textContent = data.averageRating
@@ -123,7 +123,7 @@
 
    async function loadGameStats() {
       try {
-         const res = await fetch('http://localhost:3000/api/games/' + GAME_ID);
+         const res = await fetch('http://127.0.0.1:3000/api/games/' + GAME_ID);
          const data = await res.json();
          document.getElementById('purchaseCount').textContent = 'Global Purchases: ' + data.game.purchase_count;
       } catch (err) {}
@@ -135,7 +135,7 @@
       const msg = document.getElementById('reviewMsg');
 
       try {
-         const res = await fetch('http://localhost:3000/api/reviews/game/' + GAME_ID, {
+         const res = await fetch('http://127.0.0.1:3000/api/reviews/game/' + GAME_ID, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',

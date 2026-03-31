@@ -63,13 +63,20 @@
       window.location.href = 'signin.html';
    });
 
-   // Game page mapping
    const gamePageMap = {
       1: 'storegamepage.html?id=1',
       2: 'storegamepage.html?id=2',
       3: 'storegamepage.html?id=3',
       4: 'storegamepage.html?id=4',
       5: 'storegamepage.html?id=5'
+   };
+
+   const gameThumbnails = {
+      1: 'Games/NeonCityIMGs/NeonCityMain.png',
+      2: 'Games/MysticValeIMGs/MysticValeMain.png',
+      3: 'Games/Smoke_bold.png',
+      4: 'Games/Smoke_bold.png',
+      5: 'Games/Smoke_bold.png'
    };
 
    function renderGames(games) {
@@ -85,9 +92,10 @@
          const card = document.createElement('div');
          card.className = 'game-card';
          const page = gamePageMap[game.gameID] || 'storegamepage.html?id=' + game.gameID;
+         const img = gameThumbnails[game.gameID] || 'Games/Smoke_bold.png';
          card.innerHTML = `
             <div class="game-image">
-               <img src="../images/game1.png" alt="${game.title}">
+               <img src="${img}" alt="${game.title}">
             </div>
             <h3 class="game-title">${game.title}</h3>
             <p class="game-price">${game.price} Credits</p>
@@ -109,27 +117,25 @@
    }
 
    function searchByGenre(genre) {
-      loadGames('http://localhost:3000/api/games/search?genre=' + genre);
+      loadGames('http://127.0.0.1:3000/api/games/search?genre=' + genre);
    }
 
    document.getElementById('searchBtn').addEventListener('click', function() {
       const query = document.getElementById('search').value.trim();
       if (query) {
-         loadGames('http://localhost:3000/api/games/search?query=' + encodeURIComponent(query));
+         loadGames('http://127.0.0.1:3000/api/games/search?query=' + encodeURIComponent(query));
       } else {
-         loadGames('http://localhost:3000/api/games');
+         loadGames('http://127.0.0.1:3000/api/games');
       }
    });
 
-   // Also search on Enter key
    document.getElementById('search').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
          document.getElementById('searchBtn').click();
       }
    });
 
-   // Load all games on page load
-   loadGames('http://localhost:3000/api/games');
+   loadGames('http://127.0.0.1:3000/api/games');
 </script>
 
 </body>
