@@ -1,20 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const libraryController = require('../controllers/libraryController');
+const authenticateToken = require('../middleware/auth');
 
-// GET /api/library - Get current user's game library
+// All library routes require authentication
+router.use(authenticateToken);
+
+// GET /api/library
 router.get('/', libraryController.getUserLibrary);
 
-// GET /api/library/check/:gameId - Check if user owns a game
+// GET /api/library/check/:gameId
 router.get('/check/:gameId', libraryController.checkOwnership);
 
-// GET /api/library/:gameId - Get specific game from user's library
+// GET /api/library/:gameId
 router.get('/:gameId', libraryController.getLibraryGame);
 
-// POST /api/library/:gameId - Add game to user's library (purchase)
+// POST /api/library/:gameId - purchase game
 router.post('/:gameId', libraryController.addToLibrary);
 
-// DELETE /api/library/:gameId - Remove game from library
+// DELETE /api/library/:gameId
 router.delete('/:gameId', libraryController.removeFromLibrary);
 
 module.exports = router;
