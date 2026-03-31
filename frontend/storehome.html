@@ -14,84 +14,123 @@
 </header>
 
 <nav>
-   <!--Same idea as before, store is now darker to indicate you are on store, library takes you to library home-->
    <a href="LibraryHome.html" class="nav-tab">Library</a>
    <button type="button" class="nav-tab nav-active">Store</button>
+   <span id="creditsDisplay" style="margin-left:auto; padding: 10px; color: white;">Credits: ...</span>
+   <button type="button" id="logoutBtn" style="margin-left:10px;">Logout</button>
 </nav>
 
 <main>
    <div class="search-container">
       <label for="search">Search</label>
-      <input type="text" id="search" name="search" placeholder="Search games...(Doesnt work as no games are made)">
+      <input type="text" id="search" name="search" placeholder="Search games...">
+      <button type="button" id="searchBtn">Search</button>
    </div>
-   <!--Section is all filler for front page, will be edited later-->
+
    <section class="featured-section">
       <h2>Featured Games</h2>
-      
-      <div class="game-grid">
-
-         <div class="game-card">
-            <div class="game-image">
-               <img src="../images/game1.png" alt="Game 1">
-            </div>
-            <h3 class="game-title">Name</h3>
-            <div class="game-rating">★★★★★</div>
-            <p class="game-price">$0.00</p>
-            <p class="game-description">Description</p>
-            <!--Button goes to storegamepage to show how it will look when you focus in on one game, same applies for all the other buttons-->
-            <a href="storegamepage.html" class="view-button">View Game</a>
-         </div>
-
-         <div class="game-card">
-            <div class="game-image">
-               <img src="../images/game1.png" alt="Game 2">
-            </div>
-            <h3 class="game-title">Name</h3>
-            <div class="game-rating">★★★★★</div>
-            <p class="game-price">$0.00</p>
-            <p class="game-description">Description</p>
-
-            <a href="storegamepage.html" class="view-button">View Game</a>
-         </div>
-
-         <div class="game-card">
-            <div class="game-image">
-               <img src="../images/game1.png" alt="Game 3">
-            </div>
-            <h3 class="game-title">Name</h3>
-            <div class="game-rating">★★★★★</div>
-            <p class="game-price">$0.00</p>
-            <p class="game-description">Description</p>
-
-            <a href="storegamepage.html" class="view-button">View Game</a>
-         </div>
-
+      <div class="game-grid" id="gameGrid">
+         <p>Loading games...</p>
       </div>
    </section>
-   <!--Genre section, again will be edited when we start to add actual games instead of having placeholders-->
+
    <section class="genre-section">
       <h2>Search By Genre</h2>
-      
       <div class="genre-grid">
-         <button type="button" class="genre-button">
-            <span class="genre-name">Action</span>
-         </button>
-
-         <button type="button" class="genre-button">
-            <span class="genre-name">Adventure</span>
-         </button>
-
-         <button type="button" class="genre-button">
-            <span class="genre-name">RPG</span>
-         </button>
-
-         <button type="button" class="genre-button">
-            <span class="genre-name">Strategy</span>
-         </button>
+         <button type="button" class="genre-button" onclick="searchByGenre('action')"><span class="genre-name">Action</span></button>
+         <button type="button" class="genre-button" onclick="searchByGenre('adventure')"><span class="genre-name">Adventure</span></button>
+         <button type="button" class="genre-button" onclick="searchByGenre('RPG')"><span class="genre-name">RPG</span></button>
+         <button type="button" class="genre-button" onclick="searchByGenre('strategy')"><span class="genre-name">Strategy</span></button>
+         <button type="button" class="genre-button" onclick="searchByGenre('racing')"><span class="genre-name">Racing</span></button>
+         <button type="button" class="genre-button" onclick="searchByGenre('simulation')"><span class="genre-name">Simulation</span></button>
+         <button type="button" class="genre-button" onclick="searchByGenre('survival')"><span class="genre-name">Survival</span></button>
+         <button type="button" class="genre-button" onclick="searchByGenre('sports')"><span class="genre-name">Sports</span></button>
       </div>
    </section>
-
 </main>
+
+<script>
+   const token = localStorage.getItem('token');
+
+   if (!token) {
+      window.location.href = 'signin.html';
+   }
+
+   document.getElementById('creditsDisplay').textContent = 'Credits: ' + (localStorage.getItem('credits') || '0');
+
+   document.getElementById('logoutBtn').addEventListener('click', function() {
+      localStorage.clear();
+      window.location.href = 'signin.html';
+   });
+
+   // Game page mapping
+   const gamePageMap = {
+      1: 'storegamepage.html?id=1',
+      2: 'storegamepage.html?id=2',
+      3: 'storegamepage.html?id=3',
+      4: 'storegamepage.html?id=4',
+      5: 'storegamepage.html?id=5'
+   };
+
+   function renderGames(games) {
+      const grid = document.getElementById('gameGrid');
+      grid.innerHTML = '';
+
+      if (games.length === 0) {
+         grid.innerHTML = '<p>No games found.</p>';
+         return;
+      }
+
+      games.forEach(function(game) {
+         const card = document.createElement('div');
+         card.className = 'game-card';
+         const page = gamePageMap[game.gameID] || 'storegamepage.html?id=' + game.gameID;
+         card.innerHTML = `
+            <div class="game-image">
+               <img src="../images/game1.png" alt="${game.title}">
+            </div>
+            <h3 class="game-title">${game.title}</h3>
+            <p class="game-price">${game.price} Credits</p>
+            <p class="game-description">${game.description ? game.description.substring(0, 80) + '...' : ''}</p>
+            <a href="${page}" class="view-button">View Game</a>
+         `;
+         grid.appendChild(card);
+      });
+   }
+
+   async function loadGames(url) {
+      try {
+         const response = await fetch(url);
+         const data = await response.json();
+         renderGames(data.games);
+      } catch (err) {
+         document.getElementById('gameGrid').innerHTML = '<p>Could not load games.</p>';
+      }
+   }
+
+   function searchByGenre(genre) {
+      loadGames('http://localhost:3000/api/games/search?genre=' + genre);
+   }
+
+   document.getElementById('searchBtn').addEventListener('click', function() {
+      const query = document.getElementById('search').value.trim();
+      if (query) {
+         loadGames('http://localhost:3000/api/games/search?query=' + encodeURIComponent(query));
+      } else {
+         loadGames('http://localhost:3000/api/games');
+      }
+   });
+
+   // Also search on Enter key
+   document.getElementById('search').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+         document.getElementById('searchBtn').click();
+      }
+   });
+
+   // Load all games on page load
+   loadGames('http://localhost:3000/api/games');
+</script>
 
 </body>
 </html>

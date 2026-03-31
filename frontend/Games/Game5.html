@@ -2,85 +2,166 @@
 <html lang="en">
 <head>
    <meta charset="utf-8">
-   <title>Smoke - Game Details</title>
+   <title>Smoke - Harvest Haven</title>
    <link rel="stylesheet" href="Game.css" />
 </head>
 <body>
-
 <header>
    <h1>
       <img src="Smoke_bold.png" alt="Company Logo">
    </h1>
 </header>
-
 <main>
    <section class="game-image-section">
       <div class="main-image">
-         <img id="mainImage" src="../Games/StrikerEliteIMGs/StrikerEliteMain.png" alt="Striker Elite Main Image">
+         <img id="mainImage" src="../images/game1.png" alt="Game Image">
       </div>
-
       <div class="thumbnail-gallery">
          <button type="button" class="thumbnail-button">
-            <img src="../Games/StrikerEliteIMGs/StrikerEliteLower1.png" alt="Thumbnail 1">
+            <img src="../images/game1.png" alt="Thumbnail 1">
          </button>
          <button type="button" class="thumbnail-button">
-            <img src="../Games/StrikerEliteIMGs/StrikerEliteLower2.png" alt="Thumbnail 2">
+            <img src="../images/game1.png" alt="Thumbnail 2">
          </button>
          <button type="button" class="thumbnail-button">
-            <img src="../Games/StrikerEliteIMGs/StrikerEliteLower3.png" alt="Thumbnail 3">
-         </button>
-         <button type="button" class="thumbnail-button">
-            <img src="../Games/StrikerEliteIMGs/StrikerEliteLower4.png" alt="Thumbnail 4">
-         </button>
-         <button type="button" class="thumbnail-button">
-            <img src="../Games/StrikerEliteIMGs/StrikerEliteLower5.png" alt="Thumbnail 5">
+            <img src="../images/game1.png" alt="Thumbnail 3">
          </button>
       </div>
    </section>
 
    <section class="game-info-section">
       <div class="description-box">
-         <h2>Striker Elite: World Football</h2>
-         <p>A quick-paced soccer simulation where you can build your dream team and compete on the global stage! Take control of every pass, shot, and tackle with responsive gameplay, or manage your squad through an in-depth career mode.</p>
+         <h2>Harvest Haven</h2>
+         <p>Harvest Haven is a relaxing farming/life simulator where you rebuild a forgotten countryside farm. Grow all kinds of crops, raise animals, decorate your home, and build relationships with the town's unique residents.</p>
       </div>
-
       <div class="developer-box">
-         <h3>Developer/team</h3>
-         <p>cooldude</p>
+         <h3>Developer</h3>
+         <p>_Spinex_</p>
       </div>
-
       <div class="rating-box">
          <h3>Rating</h3>
-         <p>★★★★★</p>
-         <p>Price: 40 Credits (Already Owned)</p>
-         <p>Global Purchases: 8</p>
+         <p id="avgRating">Loading...</p>
+         <p>Price: 20 Credits</p>
+         <p id="purchaseCount">Loading...</p>
       </div>
-
       <div class="categories-box">
          <h3>Categories/Genres</h3>
-         <p>Sports</p>
-         <p>Simulation</p>
-         <p>Multiplayer</p>
+         <p>Simulation, Farming, Casual</p>
       </div>
-
       <a href="../LibraryHome.html" class="back-button">Back to Library</a>
+   </section>
+
+   <section class="reviews-section" style="padding: 20px;">
+      <h2>Reviews</h2>
+      <div id="reviewForm" style="margin-bottom: 20px;">
+         <h3>Leave a Review</h3>
+         <label for="rating">Rating (1-5):</label>
+         <select id="rating">
+            <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+            <option value="4">⭐⭐⭐⭐ (4)</option>
+            <option value="3">⭐⭐⭐ (3)</option>
+            <option value="2">⭐⭐ (2)</option>
+            <option value="1">⭐ (1)</option>
+         </select>
+         <br><br>
+         <label for="reviewText">Review:</label><br>
+         <textarea id="reviewText" rows="4" cols="50" placeholder="Write your review here..."></textarea>
+         <br>
+         <button type="button" id="submitReview">Submit Review</button>
+         <p id="reviewMsg" style="display:none;"></p>
+      </div>
+      <div id="reviewsList">
+         <p>Loading reviews...</p>
+      </div>
    </section>
 </main>
 
-</body>
-</html>
-
-
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-   const mainImage = document.getElementById("mainImage");
-   const thumbnails = document.querySelectorAll(".thumbnail-button img");
+   const GAME_ID = 5;
+   const token = localStorage.getItem('token');
 
-   thumbnails.forEach(function(thumbnail) {
-      thumbnail.addEventListener("click", function() {
-         mainImage.src = this.src;
-         mainImage.alt = this.alt;
+   if (!token) window.location.href = '../signin.html';
+
+   document.querySelectorAll('.thumbnail-button img').forEach(function(img) {
+      img.addEventListener('click', function() {
+         document.getElementById('mainImage').src = this.src;
       });
    });
-});
+
+   async function loadReviews() {
+      try {
+         const res = await fetch('http://localhost:3000/api/reviews/game/' + GAME_ID);
+         const data = await res.json();
+
+         document.getElementById('avgRating').textContent = data.averageRating
+            ? '⭐ ' + data.averageRating + ' / 5 (' + data.count + ' reviews)'
+            : 'No reviews yet';
+
+         const list = document.getElementById('reviewsList');
+         if (data.reviews.length === 0) {
+            list.innerHTML = '<p>No reviews yet. Be the first!</p>';
+            return;
+         }
+
+         list.innerHTML = data.reviews.map(function(r) {
+            return `<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:5px;">
+               <strong>${r.username}</strong> — ${'⭐'.repeat(r.rating)}
+               <p>${r.contents || ''}</p>
+            </div>`;
+         }).join('');
+
+      } catch (err) {
+         document.getElementById('reviewsList').innerHTML = '<p>Could not load reviews.</p>';
+      }
+   }
+
+   async function loadGameStats() {
+      try {
+         const res = await fetch('http://localhost:3000/api/games/' + GAME_ID);
+         const data = await res.json();
+         document.getElementById('purchaseCount').textContent = 'Global Purchases: ' + data.game.purchase_count;
+      } catch (err) {}
+   }
+
+   document.getElementById('submitReview').addEventListener('click', async function() {
+      const rating = parseInt(document.getElementById('rating').value);
+      const contents = document.getElementById('reviewText').value.trim();
+      const msg = document.getElementById('reviewMsg');
+
+      try {
+         const res = await fetch('http://localhost:3000/api/reviews/game/' + GAME_ID, {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+               'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ rating, contents })
+         });
+
+         const data = await res.json();
+
+         if (!res.ok) {
+            msg.textContent = data.error || 'Could not submit review.';
+            msg.style.color = 'red';
+            msg.style.display = 'block';
+            return;
+         }
+
+         msg.textContent = 'Review submitted!';
+         msg.style.color = 'green';
+         msg.style.display = 'block';
+         document.getElementById('reviewText').value = '';
+         loadReviews();
+
+      } catch (err) {
+         msg.textContent = 'Could not connect to server.';
+         msg.style.color = 'red';
+         msg.style.display = 'block';
+      }
+   });
+
+   loadReviews();
+   loadGameStats();
 </script>
+</body>
+</html>

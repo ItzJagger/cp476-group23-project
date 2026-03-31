@@ -16,60 +16,139 @@
 <main>
    <section class="game-image-section">
       <div class="main-image">
-         <img src="../images/game1.png" alt="Game Image">
+         <img id="mainImage" src="../images/game1.png" alt="Game Image">
       </div>
-      <!--all images are placeholders for now-->
-      <div class="thumbnail-gallery">
-         <button type="button" class="thumbnail-button">
-            <img src="../images/game1.png" alt="Thumbnail 1">
-         </button>
-         <button type="button" class="thumbnail-button">
-            <img src="../images/game1.png" alt="Thumbnail 2">
-         </button>
-         <button type="button" class="thumbnail-button">
-            <img src="../images/game1.png" alt="Thumbnail 3">
-         </button>
-         <button type="button" class="thumbnail-button">
-            <img src="../images/game1.png" alt="Thumbnail 4">
-         </button>
-         <button type="button" class="thumbnail-button">
-            <img src="../images/game1.png" alt="Thumbnail 5">
-         </button>
-         <button type="button" class="thumbnail-button">
-            <img src="../images/game1.png" alt="Thumbnail 6">
-         </button>
+      <div class="thumbnail-gallery" id="thumbnailGallery">
       </div>
    </section>
-   <!--Same setup as gamepageexample.html with all being able to customize later-->
+
    <section class="game-info-section">
       <div class="description-box">
-         <h2>Description</h2>
-         <p>Game description text goes here...</p>
-         <p>Additional description text...</p>
-         <p>More details about the game...</p>
+         <h2 id="gameTitle">Loading...</h2>
+         <p id="gameDescription"></p>
       </div>
 
       <div class="developer-box">
-         <h3>Developer/team</h3>
-         <p>Developer Name</p>
+         <h3>Developer</h3>
+         <p id="gameDeveloper">...</p>
       </div>
 
       <div class="rating-box">
          <h3>Rating</h3>
-         <p>★★★★★</p>
+         <p id="gameRating">...</p>
+         <p id="gamePrice">...</p>
+         <p id="gamePurchases">...</p>
       </div>
 
       <div class="categories-box">
          <h3>Categories/Genres</h3>
-         <p>Genre 1</p>
-         <p>Genre 2</p>
-         <p>Genre 3</p>
+         <p id="gameGenres">...</p>
       </div>
-      <!--Button goes back to Store page-->
-      <button type="button" class="purchase-button">Purchase</button>
+
+      <p id="statusMsg" style="color:green; display:none;"></p>
+      <p id="errorMsg" style="color:red; display:none;"></p>
+
+      <button type="button" class="purchase-button" id="purchaseBtn" style="display:none;">Purchase</button>
       <a href="storehome.html" class="back-button">Back to Store</a>
    </section>
 </main>
+
+<script>
+   const token = localStorage.getItem('token');
+
+   if (!token) {
+      window.location.href = 'signin.html';
+   }
+
+   // Get game ID from URL query string
+   const params = new URLSearchParams(window.location.search);
+   const gameId = params.get('id');
+
+   if (!gameId) {
+      window.location.href = 'storehome.html';
+   }
+
+   async function loadGame() {
+      try {
+         // Load game details
+         const gameRes = await fetch('http://localhost:3000/api/games/' + gameId);
+         const gameData = await gameRes.json();
+         const game = gameData.game;
+
+         document.title = 'Smoke - ' + game.title;
+         document.getElementById('gameTitle').textContent = game.title;
+         document.getElementById('gameDescription').textContent = game.description;
+         document.getElementById('gameDeveloper').textContent = game.developer || 'Unknown';
+         document.getElementById('gamePrice').textContent = 'Price: ' + game.price + ' Credits';
+         document.getElementById('gamePurchases').textContent = 'Global Purchases: ' + game.purchase_count;
+         document.getElementById('gameGenres').textContent = game.genres || 'N/A';
+
+         // Load reviews for average rating
+         const reviewRes = await fetch('http://localhost:3000/api/reviews/game/' + gameId);
+         const reviewData = await reviewRes.json();
+         if (reviewData.averageRating) {
+            document.getElementById('gameRating').textContent = '⭐ ' + reviewData.averageRating + ' / 5 (' + reviewData.count + ' reviews)';
+         } else {
+            document.getElementById('gameRating').textContent = 'No reviews yet';
+         }
+
+         // Check if user owns the game
+         const ownRes = await fetch('http://localhost:3000/api/library/check/' + gameId, {
+            headers: { 'Authorization': 'Bearer ' + token }
+         });
+         const ownData = await ownRes.json();
+
+         const purchaseBtn = document.getElementById('purchaseBtn');
+         if (ownData.owned) {
+            purchaseBtn.textContent = 'Already Owned';
+            purchaseBtn.disabled = true;
+            purchaseBtn.style.display = 'inline-block';
+         } else {
+            purchaseBtn.textContent = 'Purchase for ' + game.price + ' Credits';
+            purchaseBtn.style.display = 'inline-block';
+            purchaseBtn.addEventListener('click', () => purchaseGame(game.price));
+         }
+
+      } catch (err) {
+         document.getElementById('gameTitle').textContent = 'Could not load game.';
+      }
+   }
+
+   async function purchaseGame(price) {
+      const statusMsg = document.getElementById('statusMsg');
+      const errorMsg = document.getElementById('errorMsg');
+      const purchaseBtn = document.getElementById('purchaseBtn');
+
+      try {
+         const response = await fetch('http://localhost:3000/api/library/' + gameId, {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token }
+         });
+
+         const data = await response.json();
+
+         if (!response.ok) {
+            errorMsg.textContent = data.error || 'Purchase failed.';
+            errorMsg.style.display = 'block';
+            return;
+         }
+
+         // Update credits in localStorage
+         localStorage.setItem('credits', data.remainingCredits);
+
+         statusMsg.textContent = 'Purchase successful! Remaining credits: ' + data.remainingCredits;
+         statusMsg.style.display = 'block';
+         purchaseBtn.textContent = 'Already Owned';
+         purchaseBtn.disabled = true;
+
+      } catch (err) {
+         errorMsg.textContent = 'Could not connect to server.';
+         errorMsg.style.display = 'block';
+      }
+   }
+
+   loadGame();
+</script>
 
 </body>
 </html>

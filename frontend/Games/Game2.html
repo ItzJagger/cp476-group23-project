@@ -2,29 +2,26 @@
 <html lang="en">
 <head>
    <meta charset="utf-8">
-   <title>Smoke - Game Details</title>
+   <title>Smoke - Mystic Vale: Echoes of Ash</title>
    <link rel="stylesheet" href="Game.css" />
 </head>
 <body>
-
 <header>
    <h1>
       <img src="Smoke_bold.png" alt="Company Logo">
    </h1>
 </header>
-
 <main>
    <section class="game-image-section">
       <div class="main-image">
-         <img id="mainImage" src="../Games/MysticValeIMGs/MysticValeMain.png" alt="Mystic Vale Main Image">
+         <img id="mainImage" src="../Games/MysticValeIMGs/MysticValeMain.png" alt="Game Image">
       </div>
-      <!--all images are placeholders for now-->
       <div class="thumbnail-gallery">
          <button type="button" class="thumbnail-button">
             <img src="../Games/MysticValeIMGs/MysticValeLower1.png" alt="Thumbnail 1">
          </button>
          <button type="button" class="thumbnail-button">
-            <img src="../Games/MysticValeIMGs/MysticValeLower2.png" alt="Thumbnail 2>
+            <img src="../Games/MysticValeIMGs/MysticValeLower2.png" alt="Thumbnail 2">
          </button>
          <button type="button" class="thumbnail-button">
             <img src="../Games/MysticValeIMGs/MysticValeLower3.png" alt="Thumbnail 3">
@@ -37,48 +34,140 @@
          </button>
       </div>
    </section>
-   <!--Full game description that can be tailored per game-->
+
    <section class="game-info-section">
       <div class="description-box">
          <h2>Mystic Vale: Echoes of Ash</h2>
-         <p>Fantasy survival adventure set in a cursed world filled with ancient ruins, hidden creatures, and forgotten magic</p>
+         <p>Fantasy survival adventure set in a cursed world filled with ancient ruins, hidden creatures, and forgotten magic.</p>
       </div>
       <div class="developer-box">
-         <h3>Developer/team</h3>
-         <p>Emberforge Interactive</p>
+         <h3>Developer</h3>
+         <p>xFireWizardx</p>
       </div>
-
       <div class="rating-box">
          <h3>Rating</h3>
-         <p>★★★★☆</p>
-         <p>Price: 60 Credits (Already Owned) </p>
-         <p>Global Purchases: 2</p>
+         <p id="avgRating">Loading...</p>
+         <p>Price: 60 Credits</p>
+         <p id="purchaseCount">Loading...</p>
       </div>
-
       <div class="categories-box">
          <h3>Categories/Genres</h3>
-         <p>Fantasy</p>
-         <p>Survival</p>
-         <p>Adventure</p>
+         <p>Adventure, Survival, Fantasy</p>
       </div>
-      <!--Button to go from gamepage back to library with all the other games-->
       <a href="../LibraryHome.html" class="back-button">Back to Library</a>
    </section>
-</main>
-</body>
-</html>
 
+   <section class="reviews-section" style="padding: 20px;">
+      <h2>Reviews</h2>
+      <div id="reviewForm" style="margin-bottom: 20px;">
+         <h3>Leave a Review</h3>
+         <label for="rating">Rating (1-5):</label>
+         <select id="rating">
+            <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+            <option value="4">⭐⭐⭐⭐ (4)</option>
+            <option value="3">⭐⭐⭐ (3)</option>
+            <option value="2">⭐⭐ (2)</option>
+            <option value="1">⭐ (1)</option>
+         </select>
+         <br><br>
+         <label for="reviewText">Review:</label><br>
+         <textarea id="reviewText" rows="4" cols="50" placeholder="Write your review here..."></textarea>
+         <br>
+         <button type="button" id="submitReview">Submit Review</button>
+         <p id="reviewMsg" style="display:none;"></p>
+      </div>
+      <div id="reviewsList">
+         <p>Loading reviews...</p>
+      </div>
+   </section>
+</main>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-   const mainImage = document.getElementById("mainImage");
-   const thumbnails = document.querySelectorAll(".thumbnail-button img");
+   const GAME_ID = 2;
+   const token = localStorage.getItem('token');
 
-   thumbnails.forEach(function(thumbnail) {
-      thumbnail.addEventListener("click", function() {
-         mainImage.src = this.src;
-         mainImage.alt = this.alt;
+   if (!token) window.location.href = '../signin.html';
+
+   document.querySelectorAll('.thumbnail-button img').forEach(function(img) {
+      img.addEventListener('click', function() {
+         document.getElementById('mainImage').src = this.src;
       });
    });
-});
+
+   async function loadReviews() {
+      try {
+         const res = await fetch('http://localhost:3000/api/reviews/game/' + GAME_ID);
+         const data = await res.json();
+
+         document.getElementById('avgRating').textContent = data.averageRating
+            ? '⭐ ' + data.averageRating + ' / 5 (' + data.count + ' reviews)'
+            : 'No reviews yet';
+
+         const list = document.getElementById('reviewsList');
+         if (data.reviews.length === 0) {
+            list.innerHTML = '<p>No reviews yet. Be the first!</p>';
+            return;
+         }
+
+         list.innerHTML = data.reviews.map(function(r) {
+            return `<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:5px;">
+               <strong>${r.username}</strong> — ${'⭐'.repeat(r.rating)}
+               <p>${r.contents || ''}</p>
+            </div>`;
+         }).join('');
+
+      } catch (err) {
+         document.getElementById('reviewsList').innerHTML = '<p>Could not load reviews.</p>';
+      }
+   }
+
+   async function loadGameStats() {
+      try {
+         const res = await fetch('http://localhost:3000/api/games/' + GAME_ID);
+         const data = await res.json();
+         document.getElementById('purchaseCount').textContent = 'Global Purchases: ' + data.game.purchase_count;
+      } catch (err) {}
+   }
+
+   document.getElementById('submitReview').addEventListener('click', async function() {
+      const rating = parseInt(document.getElementById('rating').value);
+      const contents = document.getElementById('reviewText').value.trim();
+      const msg = document.getElementById('reviewMsg');
+
+      try {
+         const res = await fetch('http://localhost:3000/api/reviews/game/' + GAME_ID, {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+               'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ rating, contents })
+         });
+
+         const data = await res.json();
+
+         if (!res.ok) {
+            msg.textContent = data.error || 'Could not submit review.';
+            msg.style.color = 'red';
+            msg.style.display = 'block';
+            return;
+         }
+
+         msg.textContent = 'Review submitted!';
+         msg.style.color = 'green';
+         msg.style.display = 'block';
+         document.getElementById('reviewText').value = '';
+         loadReviews();
+
+      } catch (err) {
+         msg.textContent = 'Could not connect to server.';
+         msg.style.color = 'red';
+         msg.style.display = 'block';
+      }
+   });
+
+   loadReviews();
+   loadGameStats();
 </script>
+</body>
+</html>

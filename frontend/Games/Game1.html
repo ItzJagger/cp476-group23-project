@@ -64,20 +64,130 @@
       <!--Button to go from gamepage back to library with all the other games-->
       <a href="../LibraryHome.html" class="back-button">Back to Library</a>
    </section>
+      <section class="reviews-section" style="padding: 20px;">
+      <h2>Reviews</h2>
+
+      <!-- Leave a review -->
+      <div id="reviewForm" style="margin-bottom: 20px;">
+         <h3>Leave a Review</h3>
+         <label for="rating">Rating (1-5):</label>
+         <select id="rating">
+            <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+            <option value="4">⭐⭐⭐⭐ (4)</option>
+            <option value="3">⭐⭐⭐ (3)</option>
+            <option value="2">⭐⭐ (2)</option>
+            <option value="1">⭐ (1)</option>
+         </select>
+         <br><br>
+         <label for="reviewText">Review:</label><br>
+         <textarea id="reviewText" rows="4" cols="50" placeholder="Write your review here..."></textarea>
+         <br>
+         <button type="button" id="submitReview">Submit Review</button>
+         <p id="reviewMsg" style="display:none;"></p>
+      </div>
+
+      <!-- Existing reviews -->
+      <div id="reviewsList">
+         <p>Loading reviews...</p>
+      </div>
+   </section>
 </main>
+
+
+<script>
+   const GAME_ID = 1;
+   const token = localStorage.getItem('token');
+
+   if (!token) {
+      window.location.href = '../signin.html';
+   }
+
+   // Thumbnail click
+   document.querySelectorAll('.thumbnail-button img').forEach(function(img) {
+      img.addEventListener('click', function() {
+         document.getElementById('mainImage').src = this.src;
+      });
+   });
+
+   // Load reviews and game stats
+   async function loadReviews() {
+      try {
+         const res = await fetch('http://localhost:3000/api/reviews/game/' + GAME_ID);
+         const data = await res.json();
+
+         document.getElementById('avgRating').textContent = data.averageRating
+            ? '⭐ ' + data.averageRating + ' / 5 (' + data.count + ' reviews)'
+            : 'No reviews yet';
+
+         const list = document.getElementById('reviewsList');
+         if (data.reviews.length === 0) {
+            list.innerHTML = '<p>No reviews yet. Be the first!</p>';
+            return;
+         }
+
+         list.innerHTML = data.reviews.map(function(r) {
+            return `<div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:5px;">
+               <strong>${r.username}</strong> — ${'⭐'.repeat(r.rating)}
+               <p>${r.contents || ''}</p>
+            </div>`;
+         }).join('');
+
+      } catch (err) {
+         document.getElementById('reviewsList').innerHTML = '<p>Could not load reviews.</p>';
+      }
+   }
+
+   // Load purchase count
+   async function loadGameStats() {
+      try {
+         const res = await fetch('http://localhost:3000/api/games/' + GAME_ID);
+         const data = await res.json();
+         document.getElementById('purchaseCount').textContent = 'Global Purchases: ' + data.game.purchase_count;
+      } catch (err) {}
+   }
+
+   // Submit review
+   document.getElementById('submitReview').addEventListener('click', async function() {
+      const rating = parseInt(document.getElementById('rating').value);
+      const contents = document.getElementById('reviewText').value.trim();
+      const msg = document.getElementById('reviewMsg');
+
+      try {
+         const res = await fetch('http://localhost:3000/api/reviews/game/' + GAME_ID, {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+               'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ rating, contents })
+         });
+
+         const data = await res.json();
+
+         if (!res.ok) {
+            msg.textContent = data.error || 'Could not submit review.';
+            msg.style.color = 'red';
+            msg.style.display = 'block';
+            return;
+         }
+
+         msg.textContent = 'Review submitted!';
+         msg.style.color = 'green';
+         msg.style.display = 'block';
+         document.getElementById('reviewText').value = '';
+         loadReviews();
+
+      } catch (err) {
+         msg.textContent = 'Could not connect to server.';
+         msg.style.color = 'red';
+         msg.style.display = 'block';
+      }
+   });
+
+   loadReviews();
+   loadGameStats();
+</script>
 
 </body>
 </html>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-   const mainImage = document.getElementById("mainImage");
-   const thumbnails = document.querySelectorAll(".thumbnail-button img");
-
-   thumbnails.forEach(function(thumbnail) {
-      thumbnail.addEventListener("click", function() {
-         mainImage.src = this.src;
-      });
-   });
-});
-</script>

@@ -15,32 +15,67 @@
 
 <main>
    <section>
-      <!--Login in area-->
-      <form method="get" action="LibraryHome.html">
+      <form id="loginForm">
          <fieldset>
             <legend>Sign in</legend>
-            
+
             <p>
-               <!--Username, Doesnt work yet but will fix-->
                <label for="username">Username</label><br>
                <input type="text" id="username" name="username">
             </p>
-            
+
             <p>
-               <!--Password, Doesnt work yet but will fix-->
                <label for="password">Password</label><br>
                <input type="password" id="password" name="password">
             </p>
-            
+
+            <p id="errorMsg" style="color:red;display:none;"></p>
+
             <p>
-               <!--Submit button that will take you to Library home -->
                <input type="submit" value="LOG IN">
             </p>
-            
+
          </fieldset>
       </form>
    </section>
 </main>
 
+<script>
+   document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
+
+      try {
+         const response = await fetch('http://localhost:3000/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+         });
+
+         const data = await response.json();
+
+         if (!response.ok) {
+            errorMsg.textContent = data.error || 'Login failed.';
+            errorMsg.style.display = 'block';
+            return;
+         }
+
+         // Save token and username to localStorage
+         localStorage.setItem('token', data.token);
+         localStorage.setItem('username', data.user.username);
+         localStorage.setItem('credits', data.user.credits);
+
+         // Redirect to library
+         window.location.href = 'LibraryHome.html';
+
+      } catch (err) {
+         errorMsg.textContent = 'Could not connect to server.';
+         errorMsg.style.display = 'block';
+      }
+   });
+</script>
 </body>
 </html>

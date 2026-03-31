@@ -15,67 +15,94 @@
 </header>
 
 <nav>
-   <!--Redirection buttons to go to store, Library is darker to show u are on library, store takes you to store home-->
    <button type="button" class="nav-tab nav-active">Library</button>
    <a href="storehome.html" class="nav-tab">Store</a>
+   <span id="creditsDisplay" style="margin-left:auto; padding: 10px; color: white;">Credits: ...</span>
+   <button type="button" id="logoutBtn" style="margin-left:10px;">Logout</button>
 </nav>
 
 <main>
    <aside>
       <h2>Your Games</h2>
-      <!--List of Games you own, very filler for now just to get an idea of how it can look-->
-      <ul class="game-list">
-         <li>
-            <a href="Games/Game1.html" class="game-button">Neon City: Night Drift</a>
-         </li>
-
-         <li>
-            <a href="Games/Game2.html" class="game-button">Mystic Vale: Echoes of Ash</a>
-         </li>
-
-         <li>
-            <a href="Games/Game3.html" class="game-button">Star Forge: Galactic Command</a>
-         </li>
-         <!---
-         <li>
-            <a href="Games/Game4.html" class="game-button">Echo Ward: Silent Descent</a>
-         </li>
-      -->
-         <li>
-            <a href="Games/Game5.html" class="game-button">Striker Elite: World Football</a>
-         </li>
-
-         <li>
-            <a href="Games/Game6.html" class="game-button">Harvest Haven</a>
-         </li>
-      <!---
-         <li>
-            <a href="Games/Game7.html" class="game-button">Iron Strike: Tactical Assault</a>
-         </li>
-      -->
+      <ul class="game-list" id="gameList">
+         <li>Loading your games...</li>
       </ul>
    </aside>
-   <!--Below is game details so we can alter this when we add actual games-->
-   <section class="game-details">
-      <h3>Example Game</h3>
-      <div class="game-image">
-         <img src="../images/game1.png" alt="Example Game">
-      </div>
-      
-      <div class="rating">
-         <span>Your Rating: </span>
-         <span class="stars">★★★★★</span>
-      </div>
-      
-      <div class="button-container">
-         <!--Fake Buttons for now, placeholders for the time being-->
-         <button type="button" class="action-button play-button">Play</button>
-         <button type="button" class="action-button review-button">Leave a Review</button>
-      </div>
-      
-      <p class="description">Description of game...</p>
+
+   <section class="game-details" id="gameDetails">
+      <p>Select a game from your library to view details.</p>
    </section>
 </main>
+
+<script>
+   const token = localStorage.getItem('token');
+   const username = localStorage.getItem('username');
+
+   // Redirect to login if not logged in
+   if (!token) {
+      window.location.href = 'signin.html';
+   }
+
+   // Show credits
+   document.getElementById('creditsDisplay').textContent = 'Credits: ' + (localStorage.getItem('credits') || '0');
+
+   // Logout
+   document.getElementById('logoutBtn').addEventListener('click', function() {
+      localStorage.clear();
+      window.location.href = 'signin.html';
+   });
+
+   // Game page mapping
+   const gamePageMap = {
+      1: 'Games/Game1.html',
+      2: 'Games/Game2.html',
+      3: 'Games/Game3.html',
+      4: 'Games/Game4.html',
+      5: 'Games/Game5.html',
+      6: 'Games/Game6.html',
+      7: 'Games/Game7.html'
+   };
+
+   // Fetch user's library
+   async function loadLibrary() {
+      try {
+         const response = await fetch('http://localhost:3000/api/library', {
+            headers: { 'Authorization': 'Bearer ' + token }
+         });
+
+         if (response.status === 401 || response.status === 403) {
+            localStorage.clear();
+            window.location.href = 'signin.html';
+            return;
+         }
+
+         const data = await response.json();
+         const gameList = document.getElementById('gameList');
+         gameList.innerHTML = '';
+
+         if (data.games.length === 0) {
+            gameList.innerHTML = '<li>You have no games yet. Visit the store!</li>';
+            return;
+         }
+
+         data.games.forEach(function(game) {
+            const li = document.createElement('li');
+            const page = gamePageMap[game.gameID];
+            if (page) {
+               li.innerHTML = '<a href="' + page + '" class="game-button">' + game.title + '</a>';
+            } else {
+               li.innerHTML = '<span class="game-button">' + game.title + '</span>';
+            }
+            gameList.appendChild(li);
+         });
+
+      } catch (err) {
+         document.getElementById('gameList').innerHTML = '<li>Could not load library.</li>';
+      }
+   }
+
+   loadLibrary();
+</script>
 
 </body>
 </html>
