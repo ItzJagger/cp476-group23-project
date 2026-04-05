@@ -24,7 +24,7 @@ nav {
    border-bottom: 1px solid #E0E0E0;
    display: flex;
    gap: 2em;
-   justify-content: center;
+   justify-content: flex-start;
    align-items: center;
    max-width: 1400px;
    margin: 0 auto;
@@ -202,4 +202,24 @@ header h1 img {
    height: 40px;
    width: auto;
    display: block;
+}
+#creditsDisplay {
+   margin-left: auto;
+   color: #333;
+   font-weight: bold;
+   font-size: 1rem;
+}
+
+#logoutBtn {
+   padding: 0.5em 1em;
+   background-color: #9E9E9E;
+   color: white;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   font-size: 0.9rem;
+}
+
+#logoutBtn:hover {
+   background-color: #757575;
 }
