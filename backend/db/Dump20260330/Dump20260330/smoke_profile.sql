@@ -39,7 +39,7 @@ CREATE TABLE `profile` (
 
 LOCK TABLES `profile` WRITE;
 /*!40000 ALTER TABLE `profile` DISABLE KEYS */;
-INSERT INTO `profile` VALUES ('_Spinex_','avatar.jpg','1999-03-15',0,0),('architecturalWeeble','avatar.jpg','2004-09-14',0,0),('BeautifulPixie4378','avatar.jpg','2011-08-22',0,0),('cooldude','avatar.jpg','2008-07-05',50,1),('creativeJagger','avatar.jpg','2004-02-03',0,0),('GameManMani4c','avatar.jpg','1985-11-12',80,3),('lapsap900','avatar.jpg','2003-12-01',0,0),('MasterOfLEMONS777','avatar.jpg','1997-10-24',0,0),('Midnight Mania','avatar.jpg','1990-02-14',0,0),('NovaCore','avatar.jpg','2000-04-20',0,0),('techyGunn3r','avatar.jpg','2004-05-30',0,0),('xFireWizardx','avatar.jpg','1993-01-22',0,0);
+INSERT INTO `profile` VALUES ('_Spinex_','avatar.jpg','1999-03-15',0,0),('architecturalWeeble','avatar.jpg','2004-09-14',0,0),('BeautifulPixie4378','avatar.jpg','2011-08-22',0,0),('cooldude','avatar.jpg','2008-07-05',2000,1),('creativeJagger','avatar.jpg','2004-02-03',0,0),('GameManMani4c','avatar.jpg','1985-11-12',80,3),('lapsap900','avatar.jpg','2003-12-01',0,0),('MasterOfLEMONS777','avatar.jpg','1997-10-24',0,0),('Midnight Mania','avatar.jpg','1990-02-14',0,0),('NovaCore','avatar.jpg','2000-04-20',0,0),('techyGunn3r','avatar.jpg','2004-05-30',0,0),('xFireWizardx','avatar.jpg','1993-01-22',0,0);
 /*!40000 ALTER TABLE `profile` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
